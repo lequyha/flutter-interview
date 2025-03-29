@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'package:auth_module/src/exceptions/login_in_with_facebook_failure.dart';
 import 'package:crypto/crypto.dart';
 import 'package:auth_module/src/cache/cache.dart';
 import 'package:auth_module/src/exceptions/login_in_with_google_failure.dart';
@@ -76,9 +77,9 @@ class AuthenticationRepository {
       await _firebaseAuth.signInWithCredential(oauthCredential);
       _controller.add(AuthenticationStatus.authenticated);
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw LogInWithGoogleFailure.fromCode(e.code).message;
+      throw LogInWithFacebookFailure.fromCode(e.code).message;
     } catch (_) {
-      throw const LogInWithGoogleFailure();
+      throw const LogInWithFacebookFailure();
     }
   }
 
