@@ -48,6 +48,7 @@ class AuthenticationRepository {
   }
 
   Future<void> logOut() async {
+    await _firebaseAuth.signOut();
     _controller.add(AuthenticationStatus.unauthenticated);
   }
 
