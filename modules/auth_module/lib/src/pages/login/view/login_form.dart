@@ -1,4 +1,5 @@
 import 'package:auth_module/src/pages/login/bloc/login_bloc.dart';
+import 'package:auth_module/src/pages/sign_up/view/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,6 +28,11 @@ class LoginForm extends StatelessWidget {
             _PasswordInput(),
             const Padding(padding: EdgeInsets.all(12)),
             _LoginButton(),
+            const Padding(padding: EdgeInsets.all(12)),
+            TextButton(
+              onPressed: () => Navigator.push(context, SignUpPage.route()),
+              child: Text('Sign Up'),
+            ),
             const Padding(padding: EdgeInsets.all(12)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

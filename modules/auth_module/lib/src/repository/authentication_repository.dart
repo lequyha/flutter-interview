@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'package:auth_module/src/exceptions/login_in_with_email_and_password_failure.dart';
 import 'package:auth_module/src/exceptions/login_in_with_facebook_failure.dart';
+import 'package:auth_module/src/exceptions/sign_up_with_email_and_password_failure.dart';
 import 'package:crypto/crypto.dart';
 import 'package:auth_module/src/cache/cache.dart';
 import 'package:auth_module/src/exceptions/login_in_with_google_failure.dart';
@@ -131,6 +133,35 @@ class AuthenticationRepository {
 
   User get currentUser {
     return _cache.read<User>(key: userCacheKey) ?? User.empty;
+  }
+
+  Future<void> signUp({required String email, required String password}) async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw SignUpWithEmailAndPasswordFailure.fromCode(e.code).message;
+    } catch (_) {
+      throw const SignUpWithEmailAndPasswordFailure();
+    }
+  }
+
+  Future<void> logInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw LogInWithEmailAndPasswordFailure.fromCode(e.code).message;
+    } catch (_) {
+      throw const LogInWithEmailAndPasswordFailure();
+    }
   }
 }
 
