@@ -35,7 +35,11 @@ class AuthenticationBloc
             return emit.onEach(
               _authenticationRepository.user,
               onData: (user) {
-                return emit(AuthenticationState.authenticated(user));
+                if (user != User.empty) {
+                  return emit(AuthenticationState.authenticated(user));
+                } else {
+                  return emit(const AuthenticationState.unauthenticated());
+                }
               },
             );
           case AuthenticationStatus.unknown:
