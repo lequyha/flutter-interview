@@ -34,6 +34,8 @@ dependencies:
     path: modules/auth_module
   user_module:
     path: modules/user_module
+  payment_module:
+    path: modules/payment_module
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

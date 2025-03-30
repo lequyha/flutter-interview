@@ -1,6 +1,7 @@
 import 'package:auth_module/auth_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:payment_module/payment_module.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,11 +12,19 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [_UserId(), _LogoutButton()],
+          children: [
+            const _UserId(),
+            const _LogoutButton(),
+            TextButton(
+              onPressed:
+                  () => Navigator.of(context).push(PaymentScreen.route()),
+              child: const Text('Payment'),
+            ),
+          ],
         ),
       ),
     );
