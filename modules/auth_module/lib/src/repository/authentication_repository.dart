@@ -68,7 +68,7 @@ class AuthenticationRepository {
       await _firebaseAuth.signInWithCredential(credential);
       _controller.add(AuthenticationStatus.authenticated);
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw LogInWithGoogleFailure.fromCode(e.code).message;
+      throw e.message.toString();
     } catch (_) {
       throw const LogInWithGoogleFailure();
     }
@@ -80,8 +80,8 @@ class AuthenticationRepository {
       await _firebaseAuth.signInWithCredential(oauthCredential);
       _controller.add(AuthenticationStatus.authenticated);
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw LogInWithFacebookFailure.fromCode(e.code).message;
-    } catch (_) {
+      throw e.message.toString();
+    } catch (e) {
       throw const LogInWithFacebookFailure();
     }
   }
@@ -142,7 +142,7 @@ class AuthenticationRepository {
         password: password,
       );
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw SignUpWithEmailAndPasswordFailure.fromCode(e.code).message;
+      throw e.message.toString();
     } catch (_) {
       throw const SignUpWithEmailAndPasswordFailure();
     }
@@ -157,8 +157,9 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
+      _controller.add(AuthenticationStatus.authenticated);
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw LogInWithEmailAndPasswordFailure.fromCode(e.code).message;
+      throw e.message.toString();
     } catch (_) {
       throw const LogInWithEmailAndPasswordFailure();
     }

@@ -24,6 +24,7 @@ class SignUpCubit extends Cubit<SignUpState> {
           state.password,
           state.confirmedPassword,
         ]),
+        status: FormzSubmissionStatus.initial,
       ),
     );
   }
@@ -39,6 +40,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         password: password,
         confirmedPassword: confirmedPassword,
         isValid: Formz.validate([state.email, password, confirmedPassword]),
+        status: FormzSubmissionStatus.initial,
       ),
     );
   }
@@ -56,6 +58,7 @@ class SignUpCubit extends Cubit<SignUpState> {
           state.password,
           confirmedPassword,
         ]),
+        status: FormzSubmissionStatus.initial,
       ),
     );
   }

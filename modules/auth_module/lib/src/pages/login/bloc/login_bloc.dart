@@ -1,5 +1,5 @@
+import 'package:auth_module/src/models/email.dart';
 import 'package:auth_module/src/models/password.dart';
-import 'package:auth_module/src/models/username.dart';
 import 'package:auth_module/src/repository/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -25,11 +25,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginUsernameChanged event,
     Emitter<LoginState> emit,
   ) {
-    final username = Username.dirty(event.username);
+    final email = Email.dirty(event.email);
     emit(
       state.copyWith(
-        username: username,
-        isValid: Formz.validate([state.password, username]),
+        email: email,
+        isValid: Formz.validate([state.password, email]),
+        status: FormzSubmissionStatus.initial,
       ),
     );
   }
@@ -42,7 +43,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(
       state.copyWith(
         password: password,
-        isValid: Formz.validate([password, state.username]),
+        isValid: Formz.validate([password, state.email]),
+        status: FormzSubmissionStatus.initial,
       ),
     );
   }
@@ -54,13 +56,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (state.isValid) {
       emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
       try {
-        await _authenticationRepository.logIn(
-          username: state.username.value,
+        await _authenticationRepository.logInWithEmailAndPassword(
+          email: state.email.value,
           password: state.password.value,
         );
         emit(state.copyWith(status: FormzSubmissionStatus.success));
-      } catch (_) {
-        emit(state.copyWith(status: FormzSubmissionStatus.failure));
+      } catch (error) {
+        emit(
+          state.copyWith(
+            status: FormzSubmissionStatus.failure,
+            errorMessage: error.toString(),
+          ),
+        );
       }
     }
   }

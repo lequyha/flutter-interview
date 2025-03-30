@@ -30,7 +30,7 @@ class LoginForm extends StatelessWidget {
             _LoginButton(),
             const Padding(padding: EdgeInsets.all(12)),
             TextButton(
-              onPressed: () => Navigator.push(context, SignUpPage.route()),
+              onPressed: () => Navigator.of(context).push(SignUpPage.route()),
               child: Text('Sign Up'),
             ),
             const Padding(padding: EdgeInsets.all(12)),
@@ -72,17 +72,17 @@ class _UsernameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayError = context.select(
-      (LoginBloc bloc) => bloc.state.username.displayError,
+      (LoginBloc bloc) => bloc.state.email.displayError,
     );
 
     return TextField(
       key: const Key('loginForm_usernameInput_textField'),
-      onChanged: (username) {
-        context.read<LoginBloc>().add(LoginUsernameChanged(username));
+      onChanged: (email) {
+        context.read<LoginBloc>().add(LoginUsernameChanged(email));
       },
       decoration: InputDecoration(
-        labelText: 'username',
-        errorText: displayError != null ? 'invalid username' : null,
+        labelText: 'email',
+        errorText: displayError != null ? 'invalid email' : null,
       ),
     );
   }
